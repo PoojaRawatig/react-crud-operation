@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
 const Create = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -16,6 +15,9 @@ const Create = () => {
   const [nameError, setNameError] = useState("");
   const [ageError, setAgeError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [genderError, setGenderError] = useState("");
+  const [courseError, setCourseError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [date, setDate] = useState("");
   const navigate = useNavigate();
 
@@ -55,18 +57,24 @@ const Create = () => {
     }
 
     if (gender === "") {
-      alert("Please select gender");
+      setGenderError("Please select gender");
       isValid = false;
+    } else {
+      setGenderError("");
     }
 
     if (course === "") {
-      alert("Please select a course");
+      setCourseError("Please select a course");
       isValid = false;
+    } else {
+      setCourseError("");
     }
 
     if (phone.trim() === "") {
-      alert("Phone number is required");
+      setPhoneError("Phone number is required");
       isValid = false;
+    } else {
+      setPhoneError("");
     }
 
     if (isValid) {
@@ -87,7 +95,6 @@ const Create = () => {
     }
   };
 
-  // Function to reset form fields
   const handleCancel = () => {
     setName("");
     setAge("");
@@ -101,6 +108,9 @@ const Create = () => {
     setNameError("");
     setAgeError("");
     setEmailError("");
+    setGenderError("");
+    setCourseError("");
+    setPhoneError("");
   };
 
   return (
@@ -110,9 +120,6 @@ const Create = () => {
           <legend className="text-primary d-flex justify-content-between align-items-center" style={{ fontWeight: "bold", fontFamily: "Arial, sans-serif", backgroundImage: "url('leaf.png')", backgroundSize: "contain", backgroundRepeat: "no-repeat", paddingLeft: "50px" }}>
             <span>Crud Operations</span>
             <div>
-              {/* <Link to="/">
-                <button className="btn btn-primary me-2">Create</button>
-              </Link> */}
               <Link to="/read">
                 <button className="btn btn-primary">Show Data</button>
               </Link>
@@ -174,6 +181,7 @@ const Create = () => {
               onChange={(e) => setGender(e.target.value)}
             /> Other
           </div>
+          {genderError && <div className="text-danger">{genderError}</div>}
         </div>
         <div className="mb-2">
           <label className="form-label">Courses</label>
@@ -192,6 +200,7 @@ const Create = () => {
             <option value="Software Engineering">Software Engineering</option>
             <option value="Animation & VFX">Animation & VFX</option>
           </select>
+          {courseError && <div className="text-danger">{courseError}</div>}
         </div>
         <div className="mb-2">
           <label className="form-label">Phone No</label>
@@ -220,6 +229,7 @@ const Create = () => {
               onChange={(e) => setPhone(e.target.value)}
             />
           </div>
+          {phoneError && <div className="text-danger">{phoneError}</div>}
         </div>
         <div className="mb-2">
           <label className="form-label">Date</label>

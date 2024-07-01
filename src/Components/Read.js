@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Switch,
+  Typography,
+} from "@mui/material";
 
 const Read = () => {
   const [data, setData] = useState([]);
@@ -35,76 +47,77 @@ const Read = () => {
   }, []);
 
   return (
-    <div className="container">
-      <div className="form-check form-switch mt-3">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          checked={tableDark}
-          onChange={() => setTableDark((prev) => !prev)}
-        />
-        <label className="form-check-label">Toggle Dark Mode</label>
-      </div>
-
-      <div className="d-flex justify-content-between align-items-center my-4">
-        <h2 className="text-primary">Read Operation</h2>
-        <Link to="/">
-          <button className="btn btn-secondary">Create</button>
+    <div style={{ padding: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <Typography variant="h4" color="primary">Read Operation</Typography>
+        <div>
+          <Switch
+            checked={tableDark}
+            onChange={() => setTableDark((prev) => !prev)}
+            color="default"
+          />
+          <Typography variant="caption">Toggle Dark Mode</Typography>
+        </div>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="success">Create</Button>
         </Link>
       </div>
-
-      <table className={`table table-striped ${tableDark ? "table-dark" : ""}`}>
-        <thead className="table-primary">
-          <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Age</th>
-            <th scope="col">Email</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Courses</th>
-            <th scope="col">Phone No</th>
-            <th scope="col">Date</th>
-            <th scope="col">Comments</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((eachData) => (
-            <tr key={eachData.id}>
-              <td>{eachData.id}</td>
-              <td>{eachData.name}</td>
-              <td>{eachData.age}</td>
-              <td>{eachData.email}</td>
-              <td>{eachData.gender}</td>
-              <td>{eachData.courses}</td>
-              <td>{eachData.phone}</td>
-              <td>{eachData.date}</td>
-              <td>{eachData.comments}</td>
-              <td>
-                <Link to="/update">
-                  <button
-                    type="button"
-                    className="btn btn-success btn-sm"
-                    onClick={() => setToLocalStorage(eachData)}
+      <TableContainer component={Paper} style={{ backgroundColor: tableDark ? "#333" : "#fff" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Age</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Courses</TableCell>
+              <TableCell>Phone No</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Comments</TableCell>
+              <TableCell>Edit</TableCell>
+              <TableCell>Delete</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((eachData) => (
+              <TableRow key={eachData.id}>
+                <TableCell>{eachData.id}</TableCell>
+                <TableCell>{eachData.name}</TableCell>
+                <TableCell>{eachData.age}</TableCell>
+                <TableCell>{eachData.email}</TableCell>
+                <TableCell>{eachData.gender}</TableCell>
+                <TableCell>{eachData.courses}</TableCell>
+                <TableCell>{eachData.phone}</TableCell>
+                <TableCell>{eachData.date}</TableCell>
+                <TableCell>{eachData.comments}</TableCell>
+                <TableCell>
+                  <Link to="/update" style={{ textDecoration: 'none' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={() => setToLocalStorage(eachData)}
+                    >
+                      Edit
+                    </Button>
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    onClick={() => handleDelete(eachData.id)}
                   >
-                    Edit
-                  </button>
-                </Link>
-              </td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(eachData.id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
