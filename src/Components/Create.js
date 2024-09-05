@@ -1,9 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import './DataTableStyles.css'; // Ensure this path matches the actual location of the file
+import "./DataTableStyles.css"; // Ensure this path matches the actual location of the file
+// import React, { useState } from 'react'; // Missing useEffect
+import React, { useState, useEffect } from "react";
 
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Create = () => {
   const [name, setName] = useState("");
@@ -97,6 +100,15 @@ const Create = () => {
     }
   };
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+  }, []);
+
   const handleCancel = () => {
     setName("");
     setAge("");
@@ -117,155 +129,184 @@ const Create = () => {
 
   return (
     <div className="container mt-3">
-      <form onSubmit={handleSubmit} className="card p-3 shadow border border-primary" style={{ maxWidth: "600px", margin: "0 auto" }}>
-        <div className="mb-3">
-          <legend className="text-primary d-flex justify-content-between align-items-center" style={{ fontWeight: "bold", fontFamily: "Arial, sans-serif", backgroundImage: "url('leaf.png')", backgroundSize: "contain", backgroundRepeat: "no-repeat", paddingLeft: "50px" }}>
-            <span>Crud Operations</span>
-            <div>
-              <Link to="/read">
-                <button className="btn btn-primary">Show Data</button>
-              </Link>
-            </div>
-          </legend>
+      {loading ? (
+        <div className="loader-container">
+          {" "}
+          {/* Apply the CSS class here */}
+          <ClipLoader color={"#D0021B"} loading={loading} size={50} />
         </div>
-        <div className="mb-2">
-          <label className="form-label">Name</label>
-          <input
-            type="text"
-            className="form-control form-control-sm"
-            style={{ color: "black" }}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          {nameError && <div className="text-danger">{nameError}</div>}
-        </div>
-        <div className="mb-2">
-          <label className="form-label">Age</label>
-          <input
-            type="number"
-            className="form-control form-control-sm"
-            style={{ color: "black" }}
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-          />
-          {ageError && <div className="text-danger">{ageError}</div>}
-        </div>
-        <div className="mb-2">
-          <label className="form-label">Email address</label>
-          <input
-            type="email"
-            className="form-control form-control-sm"
-            style={{ color: "black" }}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {emailError && <div className="text-danger">{emailError}</div>}
-        </div>
-        <div className="mb-2">
-          <label className="form-label">Gender</label>
-          <div>
-            <input
-              type="radio"
-              name="gender"
-              value="Male"
-              onChange={(e) => setGender(e.target.value)}
-            /> Male&nbsp;&nbsp;&nbsp;
-            <input
-              type="radio"
-              name="gender"
-              value="Female"
-              onChange={(e) => setGender(e.target.value)}
-            /> Female&nbsp;&nbsp;&nbsp;
-            <input
-              type="radio"
-              name="gender"
-              value="Other"
-              onChange={(e) => setGender(e.target.value)}
-            /> Other
-          </div>
-          {genderError && <div className="text-danger">{genderError}</div>}
-        </div>
-        <div className="mb-2">
-          <label className="form-label">Courses</label>
-          <select
-            name="course"
-            className="form-control form-control-sm"
-            style={{ color: "black" }}
-            value={course}
-            onChange={(e) => setCourse(e.target.value)}
-          >
-            <option value="">Select a course</option>
-            <option value="Full Stack Development">Full Stack Development</option>
-            <option value="Programming with Python">Programming with Python</option>
-            <option value="Machine Learning">Machine Learning</option>
-            <option value="Graphic Designing">Graphic Designing</option>
-            <option value="Software Engineering">Software Engineering</option>
-            <option value="Animation & VFX">Animation & VFX</option>
-          </select>
-          {courseError && <div className="text-danger">{courseError}</div>}
-        </div>
-        <div className="mb-2">
-          <label className="form-label">Phone No</label>
-          <div className="d-flex">
-            <select
-              name="phoneCode"
-              className="form-control form-control-sm w-auto"
-              style={{ color: "black" }}
-              value={phoneCode}
-              onChange={(e) => setPhoneCode(e.target.value)}
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className="card p-3 shadow border border-primary"
+          style={{ maxWidth: "600px", margin: "0 auto" }}
+        >
+          <div className="mb-3">
+            <legend
+              className="text-primary d-flex justify-content-between align-items-center"
+              style={{
+                fontWeight: "bold",
+                fontFamily: "Arial, sans-serif",
+                backgroundImage: "url('leaf.png')",
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                paddingLeft: "50px",
+              }}
             >
-              <option value="+91">+91</option>
-              <option value="+89">+89</option>
-              <option value="+83">+83</option>
-              <option value="+67">+67</option>
-              <option value="+37">+37</option>
-              <option value="+98">+98</option>
-            </select>
+              <span>Crud Operations</span>
+              <div>
+                <Link to="/read">
+                  <button className="btn btn-primary">Show Data</button>
+                </Link>
+              </div>
+            </legend>
+          </div>
+          <div className="mb-2">
+            <label className="form-label">Name</label>
             <input
-              type="number"
-              name="phone"
+              type="text"
               className="form-control form-control-sm"
               style={{ color: "black" }}
-              placeholder="Enter your Phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            {nameError && <div className="text-danger">{nameError}</div>}
+          </div>
+          <div className="mb-2">
+            <label className="form-label">Age</label>
+            <input
+              type="number"
+              className="form-control form-control-sm"
+              style={{ color: "black" }}
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+            />
+            {ageError && <div className="text-danger">{ageError}</div>}
+          </div>
+          <div className="mb-2">
+            <label className="form-label">Email address</label>
+            <input
+              type="email"
+              className="form-control form-control-sm"
+              style={{ color: "black" }}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {emailError && <div className="text-danger">{emailError}</div>}
+          </div>
+          <div className="mb-2">
+            <label className="form-label">Gender</label>
+            <div>
+              <input
+                type="radio"
+                name="gender"
+                value="Male"
+                onChange={(e) => setGender(e.target.value)}
+              />{" "}
+              Male&nbsp;&nbsp;&nbsp;
+              <input
+                type="radio"
+                name="gender"
+                value="Female"
+                onChange={(e) => setGender(e.target.value)}
+              />{" "}
+              Female&nbsp;&nbsp;&nbsp;
+              <input
+                type="radio"
+                name="gender"
+                value="Other"
+                onChange={(e) => setGender(e.target.value)}
+              />{" "}
+              Other
+            </div>
+            {genderError && <div className="text-danger">{genderError}</div>}
+          </div>
+          <div className="mb-2">
+            <label className="form-label">Courses</label>
+            <select
+              name="course"
+              className="form-control form-control-sm"
+              style={{ color: "black" }}
+              value={course}
+              onChange={(e) => setCourse(e.target.value)}
+            >
+              <option value="">Select a course</option>
+              <option value="Full Stack Development">
+                Full Stack Development
+              </option>
+              <option value="Programming with Python">
+                Programming with Python
+              </option>
+              <option value="Machine Learning">Machine Learning</option>
+              <option value="Graphic Designing">Graphic Designing</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Animation & VFX">Animation & VFX</option>
+            </select>
+            {courseError && <div className="text-danger">{courseError}</div>}
+          </div>
+          <div className="mb-2">
+            <label className="form-label">Phone No</label>
+            <div className="d-flex">
+              <select
+                name="phoneCode"
+                className="form-control form-control-sm w-auto"
+                style={{ color: "black" }}
+                value={phoneCode}
+                onChange={(e) => setPhoneCode(e.target.value)}
+              >
+                <option value="+91">+91</option>
+                <option value="+89">+89</option>
+                <option value="+83">+83</option>
+                <option value="+67">+67</option>
+                <option value="+37">+37</option>
+                <option value="+98">+98</option>
+              </select>
+              <input
+                type="number"
+                name="phone"
+                className="form-control form-control-sm"
+                style={{ color: "black" }}
+                placeholder="Enter your Phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+            {phoneError && <div className="text-danger">{phoneError}</div>}
+          </div>
+          <div className="mb-2">
+            <label className="form-label">Date</label>
+            <input
+              type="date"
+              className="form-control form-control-sm"
+              style={{ color: "black" }}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
             />
           </div>
-          {phoneError && <div className="text-danger">{phoneError}</div>}
-        </div>
-        <div className="mb-2">
-          <label className="form-label">Date</label>
-          <input
-            type="date"
+          <textarea
+            name="textarea"
             className="form-control form-control-sm"
+            cols="30"
+            rows="2"
+            placeholder="Enter your comment"
             style={{ color: "black" }}
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-        </div>
-        <textarea
-          name="textarea"
-          className="form-control form-control-sm"
-          cols="30"
-          rows="2"
-          placeholder="Enter your comment"
-          style={{ color: "black" }}
-          value={comments}
-          onChange={(e) => setComments(e.target.value)}
-        ></textarea>
-        <div className="d-flex justify-content-end mt-2">
-          <button type="submit" className="btn btn-primary btn-sm me-2">
-            Submit
-          </button>
-          <button
-            type="button"
-            className="btn btn-danger btn-sm"
-            onClick={handleCancel}
-          >
-            Reset
-          </button>
-        </div>
-      </form>
+            value={comments}
+            onChange={(e) => setComments(e.target.value)}
+          ></textarea>
+          <div className="d-flex justify-content-end mt-2">
+            <button type="submit" className="btn btn-primary btn-sm me-2">
+              Submit
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger btn-sm"
+              onClick={handleCancel}
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

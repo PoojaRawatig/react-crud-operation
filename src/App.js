@@ -8,13 +8,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
-
 function App() {
+
+
   return (
     <div className="container">
+
     <BrowserRouter>
     <Routes>
- s
+ 
     <Route exact path="/" element = {<Create/>}></Route>
     <Route exact path="/read" element = {<Read />}></Route>
     <Route exact path="/update" element = {<Update />}></Route>
